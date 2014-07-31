@@ -179,8 +179,6 @@
             }
         });
 
-        console
-
         // chain jQuery functions
         return this;
     };
