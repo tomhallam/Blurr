@@ -1,12 +1,7 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>jQuery Blurr Example Page</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100,900' rel='stylesheet' type='text/css'>
@@ -15,7 +10,7 @@ and open the template in the editor.
             body {
                 font-family: 'Roboto', sans-serif;
                 font-weight: 400; 
-            }
+            } 
             
             .header {
                 text-transform: uppercase;
@@ -28,21 +23,16 @@ and open the template in the editor.
                 color: #111;
             }
             
-            .blurstretch {
+            .has-blurr {
                 height: 300px;
                 overflow: hidden;
             }
             
-            .blurstretch > div {
+            .has-blurr > div {
                 color: #fff;
                 font-size: 36px;
                 width: 50%;
                 margin: 3% auto;
-            }
-            
-            .blurstretch > div img {
-                border: 8px solid rgba(255, 255, 255, 0.2);
-                border-radius: 8px;
             }
             
             p {
@@ -63,14 +53,12 @@ and open the template in the editor.
     <body style="padding: 0; margin: 0;">
         
         <div class='header'>BLURR Demo</div>
-        <div class="blurstretch" data-href="example_images/caribou.jpg" data-sharpness="90"><div><p class="large">Can't Do Without You</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisl elit, vehicula nec sodales sed, iaculis quis purus. Donec a consectetur lacus. </p></div></div>
-        
-        <div class="blurstretch" data-href="example_images/warning.jpg" data-sharpness="90"><div><p class="large">The Warning</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisl elit, vehicula nec sodales sed, iaculis quis purus. Donec a consectetur lacus. </p></div></div>
-        
-        <div class="blurstretch" data-href="example_images/odessa.jpg" data-sharpness="40"><div><p class="large">Odessa</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisl elit, vehicula nec sodales sed, iaculis quis purus. Donec a consectetur lacus. </p></div></div>
-            
-        <div class="blurstretch" data-href="example_images/hotsauce.jpg" data-sharpness="60" data-offsetx='-150' data-offsety='-40'><div><p class="large">Hot Sauce Committee</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisl elit, vehicula nec sodales sed, iaculis quis purus. Donec a consectetur lacus. </p></div></div>
-           
+        <div id="demo-container">
+            <div data-href="example_images/caribou.jpg" data-sharpness="80"><div><p class="large">Can't Do Without You</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisl elit, vehicula nec sodales sed, iaculis quis purus. Donec a consectetur lacus. </p></div></div>
+            <div data-href="example_images/warning.jpg" data-sharpness="50"><div><p class="large">The Warning</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisl elit, vehicula nec sodales sed, iaculis quis purus. Donec a consectetur lacus. </p></div></div>
+            <div data-href="example_images/odessa.jpg" data-sharpness="40"><div><p class="large">Odessa</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisl elit, vehicula nec sodales sed, iaculis quis purus. Donec a consectetur lacus. </p></div></div>
+            <div data-href="example_images/hotsauce.jpg" data-sharpness="60" data-offsetx='-150' data-offsety='-40'><div><p class="large">Hot Sauce Committee</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nisl elit, vehicula nec sodales sed, iaculis quis purus. Donec a consectetur lacus. </p></div></div>
+        </div>   
         
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="jquery.blurr.js"></script>
@@ -78,7 +66,11 @@ and open the template in the editor.
         <script type="text/javascript">
             
             $(document).ready(function() {
-                $('.blurstretch').blurr();
+                $('#demo-container > div').blurr({
+                    callback: function() {
+                        console.log(arguments);
+                    }
+                });
             });
             
         </script>

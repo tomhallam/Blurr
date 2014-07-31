@@ -6,8 +6,9 @@
     var pluginName = "blurr",
             defaults = {
                 offsetX: 0,
-                offsetY: 0,
-                sharpness: 40
+                offsetY: 0, 
+                sharpness: 40,
+                callback: function() {}
             };
 
     // The actual plugin constructor
@@ -22,7 +23,10 @@
         this._name = pluginName;
         
         // Store the template
-        this.tpl = '<svg><defs><filter id="blrIMG"><feGaussianBlur id="filter_1" stdDeviation="{{sharpness}}" data-filterid="1"></feGaussianBlur><feComponentTransfer><feFuncR type="linear" slope="0.4"></feFuncR><feFuncG type="linear" slope="0.4"></feFuncG><feFuncB type="linear" slope="0.4"></feFuncB></feComponentTransfer></filter></defs><image x="{{offsetX}}" y="{{offsetY}}" width="100%" height="100%" xlink:href="{{href}}" filter="url(#blrIMG)" preserveAspectRatio="xMidYMid slice"></image></svg>';
+        this.tpl = '<svg><defs><filter id="blrIMG{{i}}"><feGaussianBlur id="filter_1" stdDeviation="{{sharpness}}" data-filterid="1"></feGaussianBlur><feComponentTransfer><feFuncR type="linear" slope="0.4"></feFuncR><feFuncG type="linear" slope="0.4"></feFuncG><feFuncB type="linear" slope="0.4"></feFuncB></feComponentTransfer></filter></defs><image x="{{offsetX}}" y="{{offsetY}}" width="100%" height="100%" xlink:href="{{href}}" filter="url(#blrIMG{{i}})" preserveAspectRatio="xMidYMid slice"></image></svg>';
+        
+        // Element counter
+        this.elementCount = 0;
         
         // Initialise the plugin
         this.init();
@@ -34,53 +38,66 @@
         init: function() {
                         
             // Import options from the data-attributes of the element
+            var href, offsetX, offsetY, sharpness, callback;
+            
+            // Assign from the options, if available - [data-] attributes override below
+            href      = this.settings.href;
+            offsetX   = this.settings.offsetX;
+            offsetY   = this.settings.offsetY;
+            sharpness = this.settings.sharpness;
+            callback  = this.settings.callback;
             
             if(this.$el.data('image')) {
-                this.settings.href = this.$el.data('image');
+                href = this.$el.data('image');
             }
             
             if(this.$el.data('href')) {
-                this.settings.href = this.$el.data('href');
+                href = this.$el.data('href');
             }
             
             if(this.$el.data('offsetx')) {
-                this.settings.offsetX = this.$el.data('offsetx');
+                offsetX = this.$el.data('offsetx');
             }
             
             if(this.$el.data('offsety')) {
-                this.settings.offsetY = this.$el.data('offsety');
+                offsetY = this.$el.data('offsety');
             }
             
             if(this.$el.data('sharpness')) {
-                this.settings.sharpness = this.$el.data('sharpness');
+                sharpness = this.$el.data('sharpness');
             }
             
             // Normalise the options
-            if(typeof this.settings.offsetX === 'undefined') {
-                this.settings.offsetX  = 0;
+            if(typeof offsetX === 'undefined') {
+                offsetX = 0;
             }
 
-            if(typeof this.settings.offsetY === 'undefined') {
-                this.settings.offsetY = 0;
+            if(typeof offsetY === 'undefined') {
+                offsetY = 0;
             }
             
-            if(typeof this.settings.sharpness === 'undefined' || this.settings.sharpness.length === 0 || this.settings.sharpness < 0 || this.settings.sharpness > 100) {
-                this.settings.sharpness = (this.settings.sharpness > 100 ? 100 : 40);
+            if(typeof sharpness === 'undefined' || sharpness.length === 0 || sharpness < 0 || sharpness > 100) {
+                sharpness = (sharpness > 100 ? 100 : 40);
             }
             else {
-                this.settings.sharpness = 100 - this.settings.sharpness;
+                sharpness = 100 - sharpness;
             }
+                        
+            // Add the blurstretch CSS class
+            this.$el.addClass('has-blurr');
             
-            this.renderSVG();
+            // Parse, render and callback
+            return this.renderSVG(href, offsetX, offsetY, sharpness, callback);
 
         },
-        renderSVG: function() {
+        renderSVG: function(href, offsetX, offsetY, sharpness, callback) {
             
            var _tpl = this.tpl;
-            _tpl = _tpl.replace('{{href}}', this.settings.href);
-            _tpl = _tpl.replace('{{offsetX}}', this.settings.offsetX);
-            _tpl = _tpl.replace('{{offsetY}}', this.settings.offsetY);
-            _tpl = _tpl.replace('{{sharpness}}', this.settings.sharpness);
+            _tpl = _tpl.replace('{{href}}', href);
+            _tpl = _tpl.replace('{{offsetX}}', offsetX);
+            _tpl = _tpl.replace('{{offsetY}}', offsetY);
+            _tpl = _tpl.replace('{{sharpness}}', sharpness);
+            _tpl = _tpl.replace(/{{i}}/g, this.elementCount);
 
             $(_tpl).appendTo(this.$el);
             
@@ -101,6 +118,10 @@
                 'z-index': 100
             });
             
+            if(typeof callback === 'function') {
+                callback.call(this, href, offsetX, offsetY, sharpness);
+            }
+            
         }
     });
 
@@ -111,6 +132,7 @@
             if (!$.data(this, "plugin_" + pluginName)) {
                 $.data(this, "plugin_" + pluginName, new Blurr(this, options));
             }
+            this.elementCount++;
         });
 
         // chain jQuery functions
