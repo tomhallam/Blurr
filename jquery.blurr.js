@@ -163,13 +163,11 @@
             this.$el.addClass('has-blurr');
 
             // Parse, render and callback
-            if(this.support.cssfilters) {
-                return this.renderCSSFilter(href, offsetX, offsetY, sharpness, height, callback);
-            }
-            else if(this.support.svgfilters) {
+            if(this.support.svgfilters && !this.support.cssfilters) {
                 return this.renderSVG(href, offsetX, offsetY, sharpness, height, callback);
-            } else {
-                //return this.renderBlurredImage(href, offsetX, offsetY, sharpness, height, callback);
+            }
+            else {
+                return this.renderCSSFilter(href, offsetX, offsetY, sharpness, height, callback);
             }
 
         },
