@@ -1,0 +1,35 @@
+{
+    "name": "blurr",
+    "title": "jQuery Blurr",
+    "description": "jQuery plugin for creating trendy blurred backgrounds from an image",
+    "keywords": [
+        "blur",
+        "svg",
+        "background"
+    ],
+    "version": "0.1.0",
+    "author": {
+        "name": "Tom Hallam",
+        "url": "https://github.com/tomhallam"
+    },
+    "maintainers": [
+        {
+            "name": "Tom Hallam",
+            "email": "tom@freshnode.co.uk",
+            "url": "https://github.com/tomhallam"
+        }
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/tomhallam/Blurr/MIT-LICENSE.txt"
+        }
+    ],
+    "bugs": "https://github.com/tomhallam/Blurr/issues",
+    "homepage": "https://github.com/tomhallam/Blurr",
+    "docs": "https://github.com/tomhallam/Blurr",
+    "download": "https://github.com/tomhallam/Blurr",
+    "dependencies": {
+        "jquery": ">=1.5"
+    }
+}
