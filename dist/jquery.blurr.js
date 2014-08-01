@@ -36,6 +36,7 @@
                 offsetY: 0, 
                 sharpness: 40,
                 height: 300,
+                divBG: '#000',
                 callback: function() {},
                 unsupportedCallback: function() {}
             };
@@ -63,7 +64,8 @@
         this.supportsFilter = (typeof SVGFEColorMatrixElement !== 'undefined' && SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_SATURATE === 2);
         this.supportsFilter = (window.location.hash.length > 0);
         
-        _browserPrefixes = ' -webkit- -moz- -o- -ms- '.split(' '),
+        var _browserPrefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
+        var _cssPrefixString = {};
         
         /*jshint -W030 */
         _cssPrefix = function(property) {
@@ -290,7 +292,7 @@
             }
             
             // Format the inner div with some styles to make sure it shows
-            this.$el.find('div').not('.blurr-bg').css({
+            this.$el.find('> div').not('.blurr-bg').css({
                 'position': 'absolute',
                 'left': 0,
                 'right': 0,

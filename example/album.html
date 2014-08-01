@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Blurr Album Cover Example</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100,900' rel='stylesheet' type='text/css'>
+        <style type="text/css">
+            
+            body {
+                font-family: 'Roboto', sans-serif;
+                font-weight: 400; 
+                padding: 0;
+                margin: 0;
+            } 
+            
+            p {
+                margin: 0;
+            }
+                        
+            .header {
+                text-transform: uppercase;
+                font-weight: 900;
+                text-align: center;
+                margin-top: 50px;
+                margin-bottom: 50px;
+                font-size: 26px;
+                letter-spacing: 5px;
+                color: #111;
+            }
+                        
+            #album-cover > div {
+                color: #fff;
+                width: 800px;
+                margin: 0 auto;
+                margin-top: 40px;
+            }
+            
+            #album-cover .image {
+                width: 200px;
+                float: left;
+                margin-right: 55px;
+            }
+            
+            #album-cover .image img {
+                border: 10px solid rgba(255, 255, 255, 0.3);
+                border-radius: 5px;
+                opacity: 0.9;
+            }
+            
+            #album-cover .info {
+                float: left;
+                width: 500px;
+            }
+            
+            p.large {
+                text-transform: uppercase;
+                font-size: 34px;
+                font-weight: 900;
+                letter-spacing: 5px;
+            }
+            
+            p.subtitle {
+                font-size: 24px;
+            }
+            
+            p.review {
+                font-weight: 200;
+                margin-top: 10px;
+            }
+            
+            .image .play {
+                position: relative;
+                top: -150px;
+                display: inline-block;
+                border-radius: 25px;
+                left: 75px;
+                text-indent: -99999px;
+                width: 70px;
+                height: 70px;
+                background: url(example_images/play.png);
+            }
+            
+        </style>
+        
+    </head>
+    <body>
+        
+        <div class='header'>Album information example</div>
+        <div id="album-cover" data-href="example_images/caribou.jpg" data-sharpness="40">
+            <div>
+                <div class='image'>
+                    <img src='example_images/caribou.jpg' width='200' />
+                    <div class='play'>Play track</div>
+                </div>
+                <div class='info'>
+                    <p class="large">Can't do without you</p>
+                    <p class='subtitle'>Caribou - Summer 2014</p>
+                    <p class='review'>Caribou's 2014 return, via the single "Can't Do Without You," just got all the more Balearic-ally irresistible. Canadian producer Dan Snaith now serves up the song's extended mix which, clocking in at six-and-a-half soulful minutes, allows those warm waves of earful pleasure reach all new heights — all of which we hope speaks to the captivating consistency of the man's upcoming album, Our Love.</p>
+                </div>
+            </div>
+        </div>
+
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="../dist/jquery.blurr.js"></script>
+        
+        <script type="text/javascript">
+            
+            $(document).ready(function() {
+                $('#album-cover').blurr({
+                    height: 300
+                });
+            });
+            
+        </script>
+        
+    </body>
+</html>
