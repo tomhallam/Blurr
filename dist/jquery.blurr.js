@@ -36,7 +36,8 @@
                 offsetY: 0, 
                 sharpness: 40,
                 height: 300,
-                callback: function() {}
+                callback: function() {},
+                unsupportedCallback: function() {}
             };
 
     // The actual plugin constructor
@@ -63,7 +64,8 @@
         this.supportsFilter = (window.location.hash.length > 0);
         
         _browserPrefixes = ' -webkit- -moz- -o- -ms- '.split(' '),
-        _cssPrefixString = {},
+        
+        /*jshint -W030 */
         _cssPrefix = function(property) {
           if (_cssPrefixString[property] || _cssPrefixString[property] === '') return _cssPrefixString[property] + property;
           var e = document.createElement('div');
@@ -75,8 +77,10 @@
             } 
           }
           return property.toLowerCase();
-        },
+        };
+        
         // https://github.com/Modernizr/Modernizr/blob/master/feature-detects/css-filters.js
+        /*jshint -W030 */
         this.support = {
           cssfilters: function() {
             var el = document.createElement('div');
@@ -92,7 +96,14 @@
             } catch (e) {}
             return result;
           }()
-        },
+        };
+                
+        // Immediately hand off to the unsupported callback if there's no support
+        if(!this.support.cssfilters && !this.support.svgfilters) {
+            if(typeof this.settings.unsupportedCallback === 'function') {
+                return this.settings.unsupportedCallback.call(this);
+            }
+        }
                 
         // What CSS Vendor Prefix?
         /*jshint -W030 */
@@ -160,10 +171,9 @@
                         
             // Add the blurstretch CSS class
             this.$el.addClass('has-blurr');
-            
+                        
             // Parse, render and callback
             if(this.support.svgfilters && !this.support.cssfilters) {
-                
                 return this.renderSVG(href, offsetX, offsetY, sharpness, height, callback);
             }
             else {
