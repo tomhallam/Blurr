@@ -258,6 +258,7 @@
             
             //
             var prefix = this.cssPrefix;
+            var p2 = prefix;
             
             // Apply the fallback style for old browsers
             if(this.support.cssfilters) {
