@@ -51,10 +51,53 @@
         this._name = pluginName;
         
         // Store the template
-        this.tpl = '<svg><defs><filter id="blrIMG{{i}}"><feGaussianBlur id="filter_1" stdDeviation="{{sharpness}}" data-filterid="1"></feGaussianBlur><feComponentTransfer><feFuncR type="linear" slope="0.4"></feFuncR><feFuncG type="linear" slope="0.4"></feFuncG><feFuncB type="linear" slope="0.4"></feFuncB></feComponentTransfer></filter></defs><image x="{{offsetX}}" y="{{offsetY}}" width="100%" height="100%" xlink:href="{{href}}" filter="url(#blrIMG{{i}})" preserveAspectRatio="xMidYMid slice"></image></svg>';
+        this.tpl = '<svg><defs><filter id="blrIMG{{i}}"><feGaussianBlur id="filter_1" stdDeviation="{{sharpness}}" data-filterid="1"></feGaussianBlur><feComponentTransfer><feFuncR type="linear" slope="0.8"></feFuncR><feFuncG type="linear" slope="0.8"></feFuncG><feFuncB type="linear" slope="0.8"></feFuncB></feComponentTransfer></filter></defs><image x="{{offsetX}}" y="{{offsetY}}" width="100%" height="100%" xlink:href="{{href}}" filter="url(#blrIMG{{i}})" preserveAspectRatio="xMidYMid slice"></image></svg>';
         
         // Element counter
         this.elementCount = elementIndex;
+        
+        // Does this browser support SVG filtering?
+        this.supportsFilter = (typeof SVGFEColorMatrixElement !== undefined && SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_SATURATE === 2);
+        this.supportsFilter = (window.location.hash.length > 0);
+        
+        _browserPrefixes = ' -webkit- -moz- -o- -ms- '.split(' '),
+        _cssPrefixString = {},
+        _cssPrefix = function(property) {
+          if (_cssPrefixString[property] || _cssPrefixString[property] === '') return _cssPrefixString[property] + property;
+          var e = document.createElement('div');
+          var prefixes = ['', 'Moz', 'Webkit', 'O', 'ms', 'Khtml']; // Various supports...
+          for (var i in prefixes) {
+            if (typeof e.style[prefixes[i] + property] !== 'undefined') {
+              _cssPrefixString[property] = prefixes[i];
+              return prefixes[i] + property;
+            }
+          }
+          return property.toLowerCase();
+        },
+        // https://github.com/Modernizr/Modernizr/blob/master/feature-detects/css-filters.js
+        _support = {
+          cssfilters: function() {
+            var el = document.createElement('div');
+            el.style.cssText = _browserPrefixes.join('filter' + ':blur(2px); ');
+            return !!el.style.length && ((document.documentMode === undefined || document.documentMode > 9));
+          }(),
+
+          // https://github.com/Modernizr/Modernizr/blob/master/feature-detects/svg-filters.js
+          svgfilters: function() {
+            var result = false;
+            try {
+              result = typeof SVGFEColorMatrixElement !== undefined &&
+                SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_SATURATE == 2;
+            } catch (e) {}
+            return result;
+          }()
+        },
+        
+        // Support detection
+        this.support = _support;
+        
+        // What CSS Vendor Prefix?
+        this.cssPrefix = _cssPrefix('filter');
         
         // Initialise the plugin
         this.init();
@@ -118,9 +161,16 @@
                         
             // Add the blurstretch CSS class
             this.$el.addClass('has-blurr');
-            
+
             // Parse, render and callback
-            return this.renderSVG(href, offsetX, offsetY, sharpness, height, callback);
+            if(this.support.cssfilters) {
+                return this.renderCSSFilter(href, offsetX, offsetY, sharpness, height, callback);
+            }
+            else if(this.support.svgfilters) {
+                return this.renderSVG(href, offsetX, offsetY, sharpness, height, callback);
+            } else {
+                //return this.renderBlurredImage(href, offsetX, offsetY, sharpness, height, callback);
+            }
 
         },
         renderSVG: function(href, offsetX, offsetY, sharpness, height, callback) {
@@ -139,7 +189,8 @@
             // Format the target div
             this.$el.css({
                 'height': height,
-                'overflow': 'hidden'
+                'overflow': 'hidden',
+                'background': '#000'
             });
             
             // Format the SVG with some tweaks to make it look grand.
@@ -152,6 +203,7 @@
                 'right': 0,
                 'left': 0
             });
+            
 
             // Format the inner div with some styles to make sure it shows
             this.$el.find('div:first').css({
@@ -165,6 +217,71 @@
             if(typeof callback === 'function') {
                 callback.call(this, href, offsetX, offsetY, sharpness);
             }
+            
+        },
+        renderCSSFilter: function(href, offsetX, offsetY, sharpness, height, callback) {
+            
+            // Format the target div
+            this.$el.css({
+                'height': height,
+                'overflow': 'hidden',
+                'position': 'relative',
+                'background': '#000'
+            });
+            
+            // Create a background position string
+            var bgPosition;
+            if(offsetX && offsetY) {
+                bgPosition = offsetX + 'px ' + offsetY + 'px';
+            }
+            else if(offsetX && !offsetY) {
+                bgPosition = offsetX + 'px center';
+            }
+            else if(!offsetX && offsetY) {
+                bgPosition = 'center ' + offsetY + 'px';
+            }
+            else {
+                bgPosition = 'center center';
+            }
+            
+            var bgDiv = $('<div class="blurr-bg"></div>').css({
+                'background': 'url(' + href + ')',
+                'left': 0,
+                'right': 0,
+                'top': -50,
+                'bottom': -50,
+                width: this.$el.width(),
+                'background-size': '150% auto',
+                'background-position': bgPosition,
+                '-webkit-filter': 'blur(' + sharpness + 'px)',
+                'z-index': 50,
+                'position': 'absolute'
+            }).prependTo(this.$el);
+            
+            //
+            var prefix = this.cssPrefix;
+            
+            // Apply the fallback style for old browsers
+            if(this.support.cssfilters) {
+                bgDiv.css({
+                    prefix: 'blur(' + sharpness + 'px)'
+                });
+            }
+            else {
+                
+                bgDiv.css({
+                    prefix: 'progid:DXImageTransform.Microsoft.Blur(PixelRadius="' + sharpness + '")'
+                });
+                
+            }
+            
+            // Format the inner div with some styles to make sure it shows
+            this.$el.find('div').not('.blurr-bg').css({
+                'position': 'absolute',
+                'left': 0,
+                'right': 0,
+                'z-index': 100
+            });
             
         }
     });
