@@ -2,6 +2,21 @@
 
 jQuery Plugin to create nice blur backgrounds from an image
 
+**Support**
+
+- IE 8/9 (partial)
+- IE 9+ (full)
+- Chrome (desktop/mobile)
+- Firefox
+- Opera
+- Safari (desktop/mobile)
+
+**Not supported, yet**
+- Safari on Windows
+
+**Not tested**
+- iPad
+
 **Required**
 
 - jQuery (most versions will work)
@@ -26,7 +41,6 @@ Note, you'll need that `div` inside the Blurr div. This is used by the plugin to
 
 Now, initialise the plugin:
 
-        <script type="text/javascript">
             
             $(document).ready(function() {
                 $('.blur-this').blurr({
@@ -38,7 +52,6 @@ Now, initialise the plugin:
                 });
             });
             
-        </script>
         
 And sit back to watch the glory unfold.
 
