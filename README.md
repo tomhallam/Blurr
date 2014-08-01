@@ -1,5 +1,4 @@
-Blurr
-=====
+![BLURR](http://freshnode.co.uk/img/blurrheader.png)
 
 jQuery Plugin to create nice blur backgrounds from an image
 
