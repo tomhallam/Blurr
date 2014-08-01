@@ -41,6 +41,7 @@
 
     // The actual plugin constructor
     function Blurr(element, options, elementIndex) {
+        
         this.$el = $(element);
         // jQuery has an extend method which merges the contents of two or
         // more objects, storing the result in the first object. The first object
@@ -49,6 +50,7 @@
         this.settings = $.extend({}, defaults, options);
         this._defaults = defaults;
         this._name = pluginName;
+        this.cssPrefix = null;
         
         // Store the template
         this.tpl = '<svg><defs><filter id="blrIMG{{i}}"><feGaussianBlur id="filter_1" stdDeviation="{{sharpness}}" data-filterid="1"></feGaussianBlur><feComponentTransfer><feFuncR type="linear" slope="0.8"></feFuncR><feFuncG type="linear" slope="0.8"></feFuncG><feFuncB type="linear" slope="0.8"></feFuncB></feComponentTransfer></filter></defs><image x="{{offsetX}}" y="{{offsetY}}" width="100%" height="100%" xlink:href="{{href}}" filter="url(#blrIMG{{i}})" preserveAspectRatio="xMidYMid slice"></image></svg>';
@@ -75,7 +77,7 @@
           return property.toLowerCase();
         },
         // https://github.com/Modernizr/Modernizr/blob/master/feature-detects/css-filters.js
-        _support = {
+        this.support = {
           cssfilters: function() {
             var el = document.createElement('div');
             el.style.cssText = _browserPrefixes.join('filter' + ':blur(2px); ');
@@ -92,11 +94,9 @@
             return result;
           }()
         },
-        
-        // Support detection
-        this.support = _support;
-        
+                
         // What CSS Vendor Prefix?
+        /*jshint -W030 */
         this.cssPrefix = _cssPrefix('filter');
         
         // Initialise the plugin
