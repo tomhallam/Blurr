@@ -57,9 +57,9 @@
         
         // Element counter
         this.elementCount = elementIndex;
-        
+         
         // Does this browser support SVG filtering?
-        this.supportsFilter = (typeof SVGFEColorMatrixElement !== undefined && SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_SATURATE === 2);
+        this.supportsFilter = (typeof SVGFEColorMatrixElement !== 'undefined' && SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_SATURATE === 2);
         this.supportsFilter = (window.location.hash.length > 0);
         
         _browserPrefixes = ' -webkit- -moz- -o- -ms- '.split(' '),
@@ -72,7 +72,7 @@
             if (typeof e.style[prefixes[i] + property] !== 'undefined') {
               _cssPrefixString[property] = prefixes[i];
               return prefixes[i] + property;
-            }
+            } 
           }
           return property.toLowerCase();
         },
@@ -88,8 +88,7 @@
           svgfilters: function() {
             var result = false;
             try {
-              result = typeof SVGFEColorMatrixElement !== undefined &&
-                SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_SATURATE == 2;
+              result = typeof SVGFEColorMatrixElement !== 'undefined' && SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_SATURATE == 2;
             } catch (e) {}
             return result;
           }()
@@ -161,14 +160,16 @@
                         
             // Add the blurstretch CSS class
             this.$el.addClass('has-blurr');
-
+            
             // Parse, render and callback
             if(this.support.svgfilters && !this.support.cssfilters) {
+                
                 return this.renderSVG(href, offsetX, offsetY, sharpness, height, callback);
             }
             else {
                 return this.renderCSSFilter(href, offsetX, offsetY, sharpness, height, callback);
             }
+            
 
         },
         renderSVG: function(href, offsetX, offsetY, sharpness, height, callback) {
@@ -262,14 +263,18 @@
             
             // Apply the fallback style for old browsers
             if(this.support.cssfilters) {
-                bgDiv.css({
-                    prefix: 'blur(' + sharpness + 'px)'
-                });
+                bgDiv[0].style[prefix] =  'blur(' + sharpness + 'px)';
             }
             else {
                 
+                bgDiv[0].style[prefix] =  'progid:DXImageTransform.Microsoft.Blur(PixelRadius="100")';
                 bgDiv.css({
-                    prefix: 'progid:DXImageTransform.Microsoft.Blur(PixelRadius="' + sharpness + '")'
+                    'top': -250,
+                    'left': -200,
+                    'opacity': 0.8
+                });
+                this.$el.css({
+                    'background': '#fff'
                 });
                 
             }
