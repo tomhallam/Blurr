@@ -116,7 +116,7 @@
         window.onscroll = function(e) {
             bodyEl.style.visibility = 'hidden';
             bodyEl.offsetHeight;
-            body.style.visibility = 'visible';
+            bodyEl.style.visibility = 'visible';
         };
         
         // Initialise the plugin
