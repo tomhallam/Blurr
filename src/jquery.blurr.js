@@ -111,6 +111,14 @@
         /*jshint -W030 */
         this.cssPrefix = _cssPrefix('filter');
         
+        // Apply the fix for "scrolling lines bug"
+        var bodyEl = document.getElementsByTagName('body')[0];
+        window.onscroll = function(e) {
+            bodyEl.style.visibility = 'hidden';
+            bodyEl.offsetHeight;
+            body.style.visibility = 'visible';
+        };
+        
         // Initialise the plugin
         this.init();
         
