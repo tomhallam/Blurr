@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Blurr by tomhallam</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Blurr</h1>
+        <p>jQuery Plugin to create nice blur backgrounds from an image</p>
+
+        <p class="view"><a href="https://github.com/tomhallam/Blurr">View the Project on GitHub <small>tomhallam/Blurr</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/tomhallam/Blurr/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/tomhallam/Blurr/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/tomhallam/Blurr">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p><img src="http://freshnode.co.uk/img/blurrheader.png" alt="BLURR"></p>
+
+<p>jQuery Plugin to create nice blur backgrounds from an image. Want to see an example? Have a look here: <a href="http://freshnode.co.uk/jquery.blurr/example">http://freshnode.co.uk/jquery.blurr/example</a></p>
+
+<p><strong>Support</strong></p>
+
+<ul>
+<li>IE 8/9 (partial)</li>
+<li>IE 9+ (full)</li>
+<li>Chrome (desktop/mobile)</li>
+<li>Firefox</li>
+<li>Opera</li>
+<li>Safari (desktop/mobile)</li>
+</ul><p><strong>Not supported, yet</strong></p>
+
+<ul>
+<li>Safari on Windows</li>
+</ul><p><strong>Not tested</strong></p>
+
+<ul>
+<li>iPad</li>
+</ul><p><strong>Required</strong></p>
+
+<ul>
+<li>jQuery (most versions will work)</li>
+<li>Blurr</li>
+<li>A web page</li>
+<li>Some <code>divs</code>
+</li>
+</ul><p><strong>Example inclusion</strong></p>
+
+<pre><code>&lt;script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="jquery.blurr.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p><strong>How to install</strong></p>
+
+<p>First, make sure jQuery is included on the page <em>above</em> the inclusion of jquery.blurr.js. Then, grab yourself an image. Any size will do (TM). </p>
+
+<p>Create a div, like so:</p>
+
+<pre><code>&lt;div class="blur-this" data-href="example-image.jpg"&gt;&lt;div&gt;Text content inside the blur&lt;/div&gt;&lt;/div&gt;
+</code></pre>
+
+<p>Note, you'll need that <code>div</code> inside the Blurr div. This is used by the plugin to ensure the text you enter is visible above the blurred graphic.</p>
+
+<p>Now, initialise the plugin:</p>
+
+<pre><code>        $(document).ready(function() {
+            $('.blur-this').blurr({
+                height: 300, // Height, in pixels of this blurred div.
+                sharpness: 40, // Sharpness, as a number between 0-100. 100 is very sharp, 0 is extremely blurry
+                offsetX: 0, // The x (left - right) offset of the image
+                offsetY: 0, // The y (top - bottom) offset of the image
+                callback: null // Callback to be called after the blur has been rendered. Recieves the following arguments (href, offsetX, offsetY, sharpness)
+            });
+        });
+</code></pre>
+
+<p>And sit back to watch the glory unfold.</p>
+
+<h1>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h1>
+
+<p>An example is available in the root of this repository in the <code>index.html</code> page.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/tomhallam">tomhallam</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
