@@ -1,6 +1,4 @@
-![BLURR](http://freshnode.co.uk/img/blurrheader.png)
-
-jQuery Plugin to create nice blur backgrounds from an image. Want to see an example? Have a look here: http://freshnode.co.uk/jquery.blurr/example
+jQuery Plugin to create nice blur backgrounds from an image. Want to see an example? Have a look here: https://blurr.k8.cleverthings.io/
 
 **Support**
 
